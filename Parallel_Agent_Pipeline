@@ -21,7 +21,7 @@ pipeline {
 					}
 					steps {
 							echo "Task1 on Agent"
-							sh label: '', script: 'sudo touch text2.txt'
+							sh label: '', script: 'sudo touch text22.txt'
 					}
 				
 				}	
@@ -31,7 +31,7 @@ pipeline {
 					} 
 					steps {
 							echo "Task2 on Agent"
-							sh label: '', script: 'sudo touch text1.txt'
+							sh label: '', script: 'sudo touch text21.txt'
 					}
 					
 				}			
