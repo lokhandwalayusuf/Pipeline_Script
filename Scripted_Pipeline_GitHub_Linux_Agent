@@ -1,0 +1,66 @@
+pipeline {
+	agent {
+		label 'slave1'
+	}
+	
+	stages {
+		stage('Git-Checkout') {
+			steps {
+					echo "Checking out from Git Repo";
+					git 'https://github.com/lokhandwalayusuf/Pipeline_Script.git'
+			}
+		}
+		
+		stage('Build') {
+			steps {
+					echo "Building the checked-out project";
+					sh label: '', script: 'sudo chmod 700 Build.sh'
+					sh label: '', script: 'sudo ./Build.sh'
+				}
+			}
+		
+		stage('Unit-Test') {
+			steps {
+					echo "Running JUnit Test";
+					sh label: '', script: 'sudo chmod 700 Unit.sh'
+					sh label: '', script: 'sudo ./Unit.sh'
+				}
+			}
+		
+		stage('Quality-Gate') {
+			steps {
+					echo "Verifying Quality Gates";
+					sh label: '', script: 'sudo chmod 700 Quality.sh'
+					sh label: '', script: 'sudo ./Quality.sh'
+			}
+		}
+		
+		stage("Deploy") {
+			steps {
+					echo "Deploying to Stage Environment for more tests!";
+					sh label: '', script: 'sudo chmod 700 Deploy.sh'
+					sh label: '', script: 'sudo ./Deploy.sh'
+			}
+		}
+	}		
+	post {
+		always {
+			echo 'This will always run'
+		}
+		success {
+			echo 'This will run only if successful'
+		}	
+		failure {
+			echo 'This will run only if failed'
+		}
+		unstable {
+			echo 'This will run only if the run was marked as unstable'
+		}
+		changed {
+			echo 'This will run only if the state of the Pipeline has changed'
+			echo 'For example, if the Pipeline was previously failing but is now successful'
+		}
+		
+	}	
+	
+}	
